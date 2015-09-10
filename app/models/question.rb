@@ -20,10 +20,19 @@ class Question < ActiveRecord::Base
 
   belongs_to :poll,
     class_name: "Poll",
-    foreign_key: :question_id,
+    foreign_key: :poll_id,
     primary_key: :id
 
   has_many :responses,
     through: :answer_choices,
     source: :responses
+
+    def results
+      res = Hash.new(0)
+      answer_choices.includes(:responses).group("answer_choices.id").count("user_id")
+      # answer_choices.includes(:responses).each do |ans|
+        res[ans.text] += ans.responses.length
+      end
+      res
+    end
 end

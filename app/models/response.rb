@@ -10,8 +10,10 @@
 #
 
 class Response < ActiveRecord::Base
+  # validates :
   validates :user_id, presence: true
-  validates :answer_choice_id, presence: true
+  validates :answer_choice, presence: true
+  validate :respondent_has_not_already_answered_question, :respondent_is_not_author
 
   belongs_to :answer_choice,
     class_name: "AnswerChoice",
@@ -27,9 +29,25 @@ class Response < ActiveRecord::Base
     through: :answer_choice,
     source: :question
 
-  has_many :sibling_responses,
-    # Proc.new{ where 'Response.id != ?', id: }, 
-    through: :question,
-    source: :responses
+  def sibling_responses
+    self.question.responses.where("responses.id != ? OR ? IS NULL", self.id, self.id)
+  end
+
+  def respondent_is_not_author
+    #debugger
+    return unless answer_choice && answer_choice.persisted?
+    if question.poll.author_id == respondent.id
+      errors[:respondent] << "respondent cannot answer their own poll/question."
+    end
+
+  end
+
+  def respondent_has_not_already_answered_question
+    #debugger
+    return unless answer_choice && answer_choice.persisted?
+    unless sibling_responses.where("responses.user_id = ?", respondent.id).empty?
+      errors[:respondent] << "respondent cannot answer the same question more than once."
+    end
+  end
 
 end

@@ -33,14 +33,7 @@ ActiveRecord::Base.transaction do
 
   AnswerChoice.create!(id: 1, text: 'Pepsi', question_id: 1)
   AnswerChoice.create!(id: 2, text: 'Coke', question_id: 1)
-  AnswerChoice.create!(id: 3, text: 'Other', question_id: 1)
-  AnswerChoice.create!(id: 4, text: 'Pen', question_id: 2)
-  AnswerChoice.create!(id: 5, text: 'Pencil', question_id: 2)
-  AnswerChoice.create!(id: 6, text: 'Chalk', question_id: 2)
-  AnswerChoice.create!(id: 7, text: 'Other', question_id: 2)
-  AnswerChoice.create!(id: 8, text: 'Light', question_id: 3)
-  AnswerChoice.create!(id: 9, text: 'Dark', question_id: 3)
-  AnswerChoice.create!(id: 10, text: 'Standard', question_id: 3)
+
   AnswerChoice.create!(id: 11, text: 'Dog', question_id: 4)
   AnswerChoice.create!(id: 12, text: 'Cat', question_id: 4)
   AnswerChoice.create!(id: 13, text: 'BeaverFish', question_id: 4)
